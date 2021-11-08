@@ -20,7 +20,7 @@ public class Message {
             List<Task> value = userListEntry.getValue();
             if (value.size() != 0) {
                 for (Task task : value) {
-                    message.append("Task: " + task.getDescription() + " Spend time: " + task.getTimeSpended() + "\n");
+                    message.append("Task: " + task.getDescription() + " Spend time: " + task.getTimeSpended() + " hours" + "\n");
                 }
             } else {
                 message.append("There is no timing detected" + "\n");

@@ -43,46 +43,24 @@ public class Reporter {
         addTaskToStudent(userListHashMap, timingReport);
         reportDto.setStudents(userListHashMap);
 
-        for (Map.Entry<User, List<Task>> userListEntry : reportDto.getStudents().entrySet()) {
-            System.out.println(userListEntry.getKey());
-            System.out.println(userListEntry.getValue());
-        }
-
         return reportDto;
     }
 
     private void addTaskToStudent(HashMap<User, List<Task>> students, List<Report> timingReport) {
         Map<Long, List<Report>> collect = timingReport.stream().collect(Collectors.groupingBy(Report::getUserId, Collectors.toList()));
-       /* for (Map.Entry<Long, List<Report>> longListEntry : collect.entrySet()) {
-            System.out.println(longListEntry.getKey());
-            System.out.println(longListEntry.getValue());
-        }*/
+
 
         for (Map.Entry<User, List<Task>> userTaskEntry : students.entrySet()) {
 
             int id = userTaskEntry.getKey().getId();
-//
             List<Report> reports = collect.get((long) id);
 
-//            System.out.println(reports);
             if (reports != null) {
                 Report report = reports.get(0);
                 List<Task> tasks = report.getTasks();
                 userTaskEntry.setValue(tasks);
             }
         }
-
-
-       /* for (StudentDto studentDto : studentDtos) {
-            List<Report> reports = collect.get(studentDto.getChatID());
-            if (reports != null) {
-                Report report = reports.get(0);
-                List<Task> tasks = report.getTasks();
-                List<TaskDto> taskDtos = mapTaskToTaskDto(tasks);
-                studentDto.setTaskDtos(taskDtos);
-            }
-
-        }*/
     }
 
 

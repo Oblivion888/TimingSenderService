@@ -24,7 +24,6 @@ public class TrackingServlet {
 
         HttpGet httpget = new HttpGet("http://localhost:8083/");
 
-        System.out.println("Request Type: " + httpget.getMethod());
 
         HttpResponse httpresponse = httpclient.execute(httpget);
 
@@ -32,9 +31,6 @@ public class TrackingServlet {
         String result = IOUtils.toString(httpresponse.getEntity().getContent(), StandardCharsets.UTF_8);
 
         List<Report> reports = Arrays.asList(mapper.readValue(result, Report[].class));
-
-
-        System.out.println(reports);
 
         return reports;
     }
