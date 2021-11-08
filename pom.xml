@@ -51,9 +51,9 @@
                     <wsdlUrls>
                         <url>http://localhost:8087/sendservice?wsdl</url>
                     </wsdlUrls>
-                    <packageName>com.sendservice</packageName>
+                    <packageName>com.soapsendservice</packageName>
                     <keep>true</keep>
-                    <sourceDestDir>${project.build.directory}/generated/src/main/java/com/sendservice</sourceDestDir>
+                    <sourceDestDir>${project.build.directory}/generated/src/main/java/com/soapsendservice</sourceDestDir>
                 </configuration>
                 <executions>
                     <execution>
