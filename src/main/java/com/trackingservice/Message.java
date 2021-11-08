@@ -1,34 +1,35 @@
 package com.trackingservice;
 
 import com.dto.ReportDto;
-import com.dto.StudentDto;
-import com.dto.TaskDto;
+import com.model.Task;
+import com.soapcommandservice.User;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 public class Message {
     String text;
 
     public Message(ReportDto reportDto) {
-        List<StudentDto> studentDtos = reportDto.getStudentDtos();
         StringBuilder message = new StringBuilder();
-        message.append("Report for " + LocalDate.now() + ":" + "\n");
-
-        for (StudentDto studentDto : studentDtos) {
-            message.append(studentDto.getFirstName() + " ");
-            message.append(studentDto.getLastName() + "\n");
-            if (studentDto.getTaskDtos() != null) {
-                for (TaskDto taskDto : studentDto.getTaskDtos()) {
-                    message.append(taskDto.getDescription() + "/" + taskDto.getTimeSpended() + " hours" + "\n");
+        for (Map.Entry<User, List<Task>> userListEntry : reportDto.getStudents().entrySet()) {
+            User user = userListEntry.getKey();
+            message.append("Tracking for " + LocalDate.now() + "\n");
+            message.append(user.getFirstName() + " " + user.getLastName() + "\n");
+            List<Task> value = userListEntry.getValue();
+            if (value.size() != 0) {
+                for (Task task : value) {
+                    message.append("Task: " + task.getDescription() + " Spend time: " + task.getTimeSpended() + "\n");
                 }
-
             } else {
-                message.append("There is no tracking");
+                message.append("There is no timing detected" + "\n");
             }
-            message.append("\n" + "//------------------------------------------------------------" + "\n");
+            message.append("--------------------------------------" + "\n");
+
         }
+
         this.text = message.toString();
+
     }
 }

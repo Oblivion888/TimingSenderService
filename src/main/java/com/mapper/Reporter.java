@@ -1,9 +1,6 @@
 package com.mapper;
 
-import com.dto.LectorDto;
 import com.dto.ReportDto;
-import com.dto.StudentDto;
-import com.dto.TaskDto;
 import com.model.Report;
 import com.model.Task;
 import com.resttimeservice.TrackingServlet;
@@ -14,6 +11,7 @@ import lombok.Setter;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -37,22 +35,45 @@ public class Reporter {
         TrackingServlet trackingServlet = new TrackingServlet();
         List<Report> timingReport = trackingServlet.getTimingReport();
 
-        List<LectorDto> lectorDtos = mapLector(allUsers);
-        List<StudentDto> studentDtos = mapStundent(allUsers);
+        reportDto.setLectors(mapLector(allUsers));
 
-        reportDto.setStudentDtos(studentDtos);
-        reportDto.setLectorDtos(lectorDtos);
+        HashMap<User, List<Task>> userListHashMap = mapStundent(allUsers);
 
-        addTaskToStudent(reportDto.getStudentDtos(), timingReport);
 
+        addTaskToStudent(userListHashMap, timingReport);
+        reportDto.setStudents(userListHashMap);
+
+        for (Map.Entry<User, List<Task>> userListEntry : reportDto.getStudents().entrySet()) {
+            System.out.println(userListEntry.getKey());
+            System.out.println(userListEntry.getValue());
+        }
 
         return reportDto;
     }
 
-    private void addTaskToStudent(List<StudentDto> studentDtos, List<Report> timingReport) {
+    private void addTaskToStudent(HashMap<User, List<Task>> students, List<Report> timingReport) {
         Map<Long, List<Report>> collect = timingReport.stream().collect(Collectors.groupingBy(Report::getUserId, Collectors.toList()));
+       /* for (Map.Entry<Long, List<Report>> longListEntry : collect.entrySet()) {
+            System.out.println(longListEntry.getKey());
+            System.out.println(longListEntry.getValue());
+        }*/
 
-        for (StudentDto studentDto : studentDtos) {
+        for (Map.Entry<User, List<Task>> userTaskEntry : students.entrySet()) {
+
+            int id = userTaskEntry.getKey().getId();
+//
+            List<Report> reports = collect.get((long) id);
+
+//            System.out.println(reports);
+            if (reports != null) {
+                Report report = reports.get(0);
+                List<Task> tasks = report.getTasks();
+                userTaskEntry.setValue(tasks);
+            }
+        }
+
+
+       /* for (StudentDto studentDto : studentDtos) {
             List<Report> reports = collect.get(studentDto.getChatID());
             if (reports != null) {
                 Report report = reports.get(0);
@@ -61,41 +82,28 @@ public class Reporter {
                 studentDto.setTaskDtos(taskDtos);
             }
 
-        }
+        }*/
     }
 
-    private List<TaskDto> mapTaskToTaskDto(List<Task> tasks) {
-        ArrayList<TaskDto> taskDtos = new ArrayList<>();
-        for (Task task : tasks) {
-            TaskDto taskDto = new TaskDto();
-            taskDto.setTimeSpended(task.getTimeSpended());
-            taskDto.setDescription(task.getDescription());
-            taskDtos.add(taskDto);
-        }
-        return taskDtos;
-    }
 
-    private List<StudentDto> mapStundent(List<User> allUsers) {
+    private HashMap<User, List<Task>> mapStundent(List<User> allUsers) {
 
-        return allUsers.stream().filter(v -> v.getRole().equals("user") || v.getRole().equals("lead"))
-                .map(v -> {
-                    StudentDto studentDto = new StudentDto();
-                    studentDto.setFirstName(v.getFirstName());
-                    studentDto.setLastName(v.getLastName());
-                    studentDto.setChatID((long) v.getId());
-                    return studentDto;
-                })
+        List<User> students = allUsers.stream()
+                .filter(v -> v.getRole().equals("user") || v.getRole().equals("lead"))
                 .collect(Collectors.toList());
+        HashMap<User, List<Task>> userMap = new HashMap<>();
+        for (User student : students) {
+            userMap.put(student, new ArrayList<Task>());
+        }
+
+        return userMap;
     }
 
-    private List<LectorDto> mapLector(List<User> allUsers) {
+    private List<User> mapLector(List<User> allUsers) {
         return allUsers.stream().filter(v -> v.getRole().equals("admin"))
-                .map(v -> {
-                    LectorDto lectorDto = new LectorDto();
-                    lectorDto.setChatID((long) v.getId());
-                    return lectorDto;
-                })
                 .collect(Collectors.toList());
+
+
     }
 
 }

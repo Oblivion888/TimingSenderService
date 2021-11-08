@@ -1,8 +1,8 @@
 package com.trackingservice;
 
-import com.dto.LectorDto;
 import com.dto.ReportDto;
 import com.mapper.Reporter;
+import com.soapcommandservice.User;
 import com.soapsendservice.SendService;
 
 
@@ -27,12 +27,13 @@ public class TimingSenderApplication {
         Reporter reporter = new Reporter();
         ReportDto report = reporter.createReport();
         Message message = new Message(report);
-
-        for (LectorDto lectorDto : report.getLectorDtos()) {
+//
+        for (User lector : report.getLectors()) {
             try {
-                SendService.sendMessage(lectorDto.getChatID(), message.text);
+                SendService.sendMessage((long) lector.getId(), message.text);
             } catch (Exception e) {
-              
+
+//            }
             }
         }
     }
