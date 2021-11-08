@@ -38,12 +38,4 @@ public class TrackingServlet {
 
         return reports;
     }
-
-
-    public static void main(String[] args) throws Exception {
-        TrackingServlet trackingServlet = new TrackingServlet();
-        trackingServlet.getTimingReport();
-    }
-
-
 }

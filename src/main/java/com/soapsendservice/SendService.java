@@ -10,8 +10,4 @@ public class SendService {
         trackingSenderService.sendMessage(chatID, text);
 //        trackingSenderService.sendMessage(430627864l, "Sashok_V", "lol");
     }
-
-    public static void main(String[] args) {
-        SendService.sendMessage(1109266611l, "lollolol");
-    }
 }

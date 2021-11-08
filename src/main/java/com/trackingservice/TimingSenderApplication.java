@@ -4,25 +4,25 @@ import com.dto.LectorDto;
 import com.dto.ReportDto;
 import com.mapper.Reporter;
 import com.soapsendservice.SendService;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
 
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public class SendReport {
-    final static Logger logger = Logger.getLogger(SendReport.class);
+public class TimingSenderApplication {
+    private static Logger logger = Logger.getLogger(TimingSenderApplication.class);
 
     public static void main(String[] args) throws IOException {
-        LocalTime sendTime = LocalTime.of(22, 32, 00);
+      /*  LocalTime sendTime = LocalTime.of(22, 32, 00);
 
         while (true) {
             if (LocalTime.now().equals(sendTime)) {
                 sendReport();
             }
-        }
+        }*/
+        sendReport();
 
     }
 
@@ -35,7 +35,7 @@ public class SendReport {
             try {
                 SendService.sendMessage(lectorDto.getChatID(), message.text);
             } catch (Exception e) {
-                logger.log(Priority.ERROR, e.getMessage());
+                logger.log(Level.ERROR, e.getMessage());
             }
         }
     }
