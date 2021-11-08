@@ -1,6 +1,6 @@
 package com.dto;
 
-public class Task {
+public class DtoTask {
     String task;
     String time;
 }

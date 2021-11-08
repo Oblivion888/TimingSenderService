@@ -2,7 +2,7 @@ package com.dto;
 
 import java.util.List;
 
-public class Lecturer {
+public class DtoLecturer {
     String chatId;
-    List<Group> groups;
+    List<DtoGroup> groups;
 }

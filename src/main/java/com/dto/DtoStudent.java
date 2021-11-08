@@ -2,8 +2,8 @@ package com.dto;
 
 import java.util.List;
 
-public class Student {
+public class DtoStudent {
     String name;
-    List<Task> task;
+    List<DtoTask> dtoTask;
 
 }

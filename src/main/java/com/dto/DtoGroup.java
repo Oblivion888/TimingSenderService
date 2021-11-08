@@ -2,7 +2,7 @@ package com.dto;
 
 import java.util.List;
 
-public class Group {
+public class DtoGroup {
     String title;
-    List<Student> students;
+    List<DtoStudent> dtoStudents;
 }
