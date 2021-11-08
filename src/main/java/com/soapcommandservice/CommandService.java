@@ -29,5 +29,8 @@ public class CommandService {
         return stringUsers;
     }
 
-
+    public static void main(String[] args) {
+        List<String> allUsers = CommandService.getAllUsers();
+        System.out.println(allUsers);
+    }
 }

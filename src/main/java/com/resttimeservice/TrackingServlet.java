@@ -18,7 +18,7 @@ import java.util.List;
 
 public class TrackingServlet {
 
-    public Report[] getTimingReport() throws IOException {
+    public List<Report> getTimingReport() throws IOException {
 
         CloseableHttpClient httpclient = HttpClients.createDefault();
 
@@ -32,9 +32,11 @@ public class TrackingServlet {
         String result = IOUtils.toString(httpresponse.getEntity().getContent(), StandardCharsets.UTF_8);
 
         List<Report> reports = Arrays.asList(mapper.readValue(result, Report[].class));
+
+
         System.out.println(reports);
 
-        return null;
+        return reports;
     }
 
 
