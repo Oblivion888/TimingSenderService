@@ -2,9 +2,6 @@ package com.resttimeservice;
 
 
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.model.Report;
 import org.apache.commons.io.IOUtils;
@@ -18,7 +15,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 public class TrackingServlet {
 
@@ -46,4 +42,6 @@ public class TrackingServlet {
         TrackingServlet trackingServlet = new TrackingServlet();
         trackingServlet.getTimingReport();
     }
+
+
 }

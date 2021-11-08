@@ -10,34 +10,25 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.source>8</maven.compiler.source>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>4.0.1</version>
-            <scope>provided</scope>
-        </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.json/json -->
+
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20210307</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>4.5.13</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -50,7 +41,6 @@
             <version>2.5</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -58,11 +48,7 @@
             <scope>provided</scope>
         </dependency>
 
-
-
-
     </dependencies>
-
 
     <build>
         <plugins>
@@ -70,8 +56,6 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
                 <version>1.4</version>
-
-
                 <executions>
                     <execution>
                         <id>test</id>
@@ -92,26 +76,43 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jaxws-maven-plugin</artifactId>
                 <version>2.6</version>
-                <configuration>
-                    <wsdlUrls>
-                        <url>http://localhost:8087/sendservice?wsdl</url>
-                    </wsdlUrls>
-                    <packageName>com.soapsendservice</packageName>
-                    <keep>true</keep>
-                    <sourceDestDir>${project.build.directory}/generated/src/main/java/com/soapsendservice</sourceDestDir>
-                </configuration>
+
+
                 <executions>
                     <execution>
-                        <id>Generate java-code from WSDL</id>
+                        <id>Generate java-code from Router</id>
                         <goals>
                             <goal>wsimport</goal>
                         </goals>
+                        <configuration>
+                            <wsdlUrls>
+                                <url>http://localhost:8087/sendservice?wsdl</url>
+                            </wsdlUrls>
+                            <packageName>com.soapsendservice</packageName>
+                            <keep>true</keep>
+                            <sourceDestDir>${project.build.directory}/generated/src/main/java</sourceDestDir>
+                        </configuration>
                     </execution>
-                </executions>
+                    <execution>
+                        <id>Generate java-code from Command</id>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <wsdlUrls>
+                                <url>http://localhost:8081/command?wsdl</url>
+                            </wsdlUrls>
+                            <packageName>com.soapcommandservice</packageName>
+                            <keep>true</keep>
+                            <sourceDestDir>${project.build.directory}/generated/src/main/java</sourceDestDir>
+                        </configuration>
+                    </execution>
 
+
+                </executions>
             </plugin>
+
 
         </plugins>
     </build>
-
 </project>
