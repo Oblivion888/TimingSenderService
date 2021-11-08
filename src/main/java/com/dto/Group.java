@@ -3,7 +3,6 @@ package com.dto;
 import java.util.List;
 
 public class Group {
-    String color;
-
+    String title;
     List<Student> students;
 }
