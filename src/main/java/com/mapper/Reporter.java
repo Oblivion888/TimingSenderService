@@ -8,6 +8,7 @@ import com.model.Report;
 import com.model.Task;
 import com.resttimeservice.TrackingServlet;
 import com.soapcommandservice.CommandService;
+import com.soapcommandservice.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,27 +28,20 @@ public class Reporter {
         this.trackingServlet = new TrackingServlet();
     }
 
-    public static void main(String[] args) throws IOException {
-        Reporter reporter = new Reporter();
-        ReportDto report = reporter.createReport();
-
-        for (StudentDto studentDto : report.getStudentDtos()) {
-            System.out.println(studentDto);
-        }
-
-        for (LectorDto lectorDto : report.getLectorDtos()) {
-            System.out.println(lectorDto);
-        }
-    }
 
     public ReportDto createReport() throws IOException {
         reportDto = new ReportDto();
 
-        List<String> allUsers = CommandService.getAllUsers();
+
+        List<User> allUsers = CommandService.getAllUsers();
+        TrackingServlet trackingServlet = new TrackingServlet();
         List<Report> timingReport = trackingServlet.getTimingReport();
 
-        mapLector(allUsers);
-        mapStundent(allUsers);
+        List<LectorDto> lectorDtos = mapLector(allUsers);
+        List<StudentDto> studentDtos = mapStundent(allUsers);
+
+        reportDto.setStudentDtos(studentDtos);
+        reportDto.setLectorDtos(lectorDtos);
 
         addTaskToStudent(reportDto.getStudentDtos(), timingReport);
 
@@ -81,32 +75,27 @@ public class Reporter {
         return taskDtos;
     }
 
-    private void mapStundent(List<String> allUsers) {
+    private List<StudentDto> mapStundent(List<User> allUsers) {
 
-        List<StudentDto> collect = allUsers.stream().filter(v -> v.split("\\|")[4].equals("user") || v.split("\\|")[4].equals("lead"))
+        return allUsers.stream().filter(v -> v.getRole().equals("user") || v.getRole().equals("lead"))
                 .map(v -> {
-                    String[] split = v.split("\\|");
                     StudentDto studentDto = new StudentDto();
-                    studentDto.setChatID(Long.parseLong(split[0]));
-                    studentDto.setFirstName(split[2]);
-                    studentDto.setLastName(split[3]);
+                    studentDto.setFirstName(v.getFirstName());
+                    studentDto.setLastName(v.getLastName());
+                    studentDto.setChatID((long) v.getId());
                     return studentDto;
                 })
                 .collect(Collectors.toList());
-        reportDto.setStudentDtos(collect);
     }
 
-    private void mapLector(List<String> allUsers) {
-        List<LectorDto> admin = allUsers.stream().filter(v -> v.split("\\|")[4].equals("admin"))
+    private List<LectorDto> mapLector(List<User> allUsers) {
+        return allUsers.stream().filter(v -> v.getRole().equals("admin"))
                 .map(v -> {
-                    String[] split = v.split("\\|");
                     LectorDto lectorDto = new LectorDto();
-                    lectorDto.setChatID(Long.parseLong(split[0]));
+                    lectorDto.setChatID((long) v.getId());
                     return lectorDto;
                 })
                 .collect(Collectors.toList());
-        reportDto.setLectorDtos(admin);
-
     }
 
 }
