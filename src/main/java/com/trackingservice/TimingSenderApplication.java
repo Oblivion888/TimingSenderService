@@ -4,15 +4,12 @@ import com.dto.LectorDto;
 import com.dto.ReportDto;
 import com.mapper.Reporter;
 import com.soapsendservice.SendService;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+
 
 
 import java.io.IOException;
-import java.time.LocalTime;
 
 public class TimingSenderApplication {
-    private static Logger logger = Logger.getLogger(TimingSenderApplication.class);
 
     public static void main(String[] args) throws IOException {
       /*  LocalTime sendTime = LocalTime.of(22, 32, 00);
@@ -35,7 +32,7 @@ public class TimingSenderApplication {
             try {
                 SendService.sendMessage(lectorDto.getChatID(), message.text);
             } catch (Exception e) {
-                logger.log(Level.ERROR, e.getMessage());
+              
             }
         }
     }

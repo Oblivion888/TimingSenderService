@@ -8,6 +8,6 @@ import lombok.ToString;
 @Getter
 @ToString
 public class TaskDto {
-    private int timeSpended;
+    private float timeSpended;
     private String description;
 }

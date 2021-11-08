@@ -21,7 +21,7 @@ public class Message {
             message.append(studentDto.getLastName() + "\n");
             if (studentDto.getTaskDtos() != null) {
                 for (TaskDto taskDto : studentDto.getTaskDtos()) {
-                    message.append(taskDto.getDescription() + "/" + taskDto.getTimeSpended() + "\n");
+                    message.append(taskDto.getDescription() + "/" + taskDto.getTimeSpended() + " hours" + "\n");
                 }
 
             } else {

@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 public class Task {
     int id;
-    int timeSpended;
+    float timeSpended;
     String description;
     int reportId;
 

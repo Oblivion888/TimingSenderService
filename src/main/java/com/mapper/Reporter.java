@@ -82,27 +82,31 @@ public class Reporter {
     }
 
     private void mapStundent(List<String> allUsers) {
-        for (String user : allUsers) {
-            String[] split = user.split("\\|");
-            if (split[4].equals("user") || split[4].equals("lead")) {
-                StudentDto studentDto = new StudentDto();
-                studentDto.setChatID(Long.parseLong(split[0]));
-                studentDto.setFirstName(split[2]);
-                studentDto.setLastName(split[3]);
-                reportDto.getStudentDtos().add(studentDto);
-            }
-        }
+
+        List<StudentDto> collect = allUsers.stream().filter(v -> v.split("\\|")[4].equals("user") || v.split("\\|")[4].equals("lead"))
+                .map(v -> {
+                    String[] split = v.split("\\|");
+                    StudentDto studentDto = new StudentDto();
+                    studentDto.setChatID(Long.parseLong(split[0]));
+                    studentDto.setFirstName(split[2]);
+                    studentDto.setLastName(split[3]);
+                    return studentDto;
+                })
+                .collect(Collectors.toList());
+        reportDto.setStudentDtos(collect);
     }
 
     private void mapLector(List<String> allUsers) {
-        for (String user : allUsers) {
-            String[] split = user.split("\\|");
-            if (split[4].equals("admin")) {
-                LectorDto lectorDto = new LectorDto();
-                lectorDto.setChatID(Long.parseLong(split[0]));
-                reportDto.getLectorDtos().add(lectorDto);
-            }
-        }
+        List<LectorDto> admin = allUsers.stream().filter(v -> v.split("\\|")[4].equals("admin"))
+                .map(v -> {
+                    String[] split = v.split("\\|");
+                    LectorDto lectorDto = new LectorDto();
+                    lectorDto.setChatID(Long.parseLong(split[0]));
+                    return lectorDto;
+                })
+                .collect(Collectors.toList());
+        reportDto.setLectorDtos(admin);
+
     }
 
 }
