@@ -16,7 +16,6 @@ public class Task {
     int reportId;
 
 
-
     @Override
     public String toString() {
         return "Task{" +

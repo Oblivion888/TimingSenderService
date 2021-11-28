@@ -1,7 +1,8 @@
 package com.soapcommandservice;
 
-import java.util.ArrayList;
+
 import java.util.List;
+
 
 public class CommandService {
 
@@ -14,6 +15,4 @@ public class CommandService {
     public static List<User> getAllUsers() {
         return getService().findAll();
     }
-
-
 }

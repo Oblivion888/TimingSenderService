@@ -5,7 +5,6 @@ import com.model.Report;
 import com.model.Task;
 import com.resttimeservice.TrackingServlet;
 import com.soapcommandservice.CommandService;
-import com.soapcommandservice.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,20 +14,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import com.soapcommandservice.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Getter
 @Setter
+@Service
 public class Reporter {
     private TrackingServlet trackingServlet;
-    private ReportDto reportDto;
 
-    public Reporter() {
-        this.trackingServlet = new TrackingServlet();
+
+    @Autowired
+    public Reporter(TrackingServlet trackingServlet) {
+        this.trackingServlet = trackingServlet;
     }
 
-
     public ReportDto createReport() throws IOException {
-        reportDto = new ReportDto();
+         ReportDto reportDto = new ReportDto();
 
 
         List<User> allUsers = CommandService.getAllUsers();
@@ -47,7 +50,8 @@ public class Reporter {
     }
 
     private void addTaskToStudent(HashMap<User, List<Task>> students, List<Report> timingReport) {
-        Map<Long, List<Report>> collect = timingReport.stream().collect(Collectors.groupingBy(Report::getUserId, Collectors.toList()));
+        Map<Long, List<Report>> collect = timingReport.stream()
+                .collect(Collectors.groupingBy(Report::getUserId, Collectors.toList()));
 
 
         for (Map.Entry<User, List<Task>> userTaskEntry : students.entrySet()) {
@@ -69,6 +73,7 @@ public class Reporter {
         List<User> students = allUsers.stream()
                 .filter(v -> v.getRole().equals("user") || v.getRole().equals("lead"))
                 .collect(Collectors.toList());
+
         HashMap<User, List<Task>> userMap = new HashMap<>();
         for (User student : students) {
             userMap.put(student, new ArrayList<Task>());
@@ -80,8 +85,5 @@ public class Reporter {
     private List<User> mapLector(List<User> allUsers) {
         return allUsers.stream().filter(v -> v.getRole().equals("admin"))
                 .collect(Collectors.toList());
-
-
     }
-
 }

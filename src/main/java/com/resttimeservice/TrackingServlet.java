@@ -9,6 +9,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.springframework.stereotype.Service;
 
 
 import java.io.IOException;
@@ -16,13 +17,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
+@Service
 public class TrackingServlet {
 
     public List<Report> getTimingReport() throws IOException {
 
         CloseableHttpClient httpclient = HttpClients.createDefault();
 
-        HttpGet httpget = new HttpGet("http://localhost:8083/");
+        HttpGet httpget = new HttpGet("http://3.14.182.52:8083/");
 
 
         HttpResponse httpresponse = httpclient.execute(httpget);

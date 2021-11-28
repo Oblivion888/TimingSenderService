@@ -2,11 +2,11 @@ package com.trackingservice;
 
 import com.dto.ReportDto;
 import com.model.Task;
-import com.soapcommandservice.User;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import com.soapcommandservice.User;
 
 public class Message {
     String text;
