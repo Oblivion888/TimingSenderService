@@ -39,9 +39,7 @@ public class Reporter {
         List<Report> timingReport = trackingServlet.getTimingReport();
 
         reportDto.setLectors(mapLector(allUsers));
-
         HashMap<User, List<Task>> userListHashMap = mapStundent(allUsers);
-
 
         addTaskToStudent(userListHashMap, timingReport);
         reportDto.setStudents(userListHashMap);
@@ -71,7 +69,7 @@ public class Reporter {
     private HashMap<User, List<Task>> mapStundent(List<User> allUsers) {
 
         List<User> students = allUsers.stream()
-                .filter(v -> v.getRole().equals("user") || v.getRole().equals("lead"))
+                .filter(v -> v.getRole().equals("student") || v.getRole().equals("lead"))
                 .collect(Collectors.toList());
 
         HashMap<User, List<Task>> userMap = new HashMap<>();
@@ -83,7 +81,7 @@ public class Reporter {
     }
 
     private List<User> mapLector(List<User> allUsers) {
-        return allUsers.stream().filter(v -> v.getRole().equals("admin"))
+        return allUsers.stream().filter(v -> v.getRole().equals("mentor"))
                 .collect(Collectors.toList());
     }
 }

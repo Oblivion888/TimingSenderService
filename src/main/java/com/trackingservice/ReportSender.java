@@ -32,7 +32,4 @@ public class ReportSender {
         }
     }
 
-    public Reporter getReporter() {
-        return reporter;
-    }
 }

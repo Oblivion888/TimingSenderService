@@ -22,8 +22,7 @@ public class TimingSenderApplication {
         LocalTime sendTime = LocalTime.of(19, 00, 00);
 
         ReportSender reportSender = (ReportSender) applicationContext.getBean("reportSender");
-        System.out.println(reportSender
-                .getReporter());
+
         /*
         while (true) {
             if (LocalTime.now().equals(sendTime)) {
